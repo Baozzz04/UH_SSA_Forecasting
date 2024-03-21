@@ -8,14 +8,17 @@ def plot_2d(matrix, title):
     plt.title(title)
 
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 
 def loadData(str):
-    with open("dataset.txt", "r") as file_solieu:
+    with open(str, "r") as file_solieu:
         data = np.loadtxt(file_solieu, dtype={'names': ('col1', 'col2'), 'formats': ('int', 'float')}, unpack=True)
     return data
 
 def Step1(data, N, L):
+    print(data[0][0])
     Fi = data[1][1:]
     # N = 100 # Number of signals to analyse
     # L = 50 # 2 < L < N - 1
@@ -34,7 +37,7 @@ def Step1(data, N, L):
         if Sigma[i] > 0:
             d = i + 1
 
-    return (Fi, U, L, K, X, N)
+    return (Fi, U, L, K, X, N, d)
 
 def Step2(U, L, K, X, N, r):
     Pi = U
@@ -103,9 +106,8 @@ def Step3(r, Pi, g, L, N, M):
 
     return gpredict
 
-def graphing(N, M, Fi, gpredict):
-    # g is now replaced by gpredict
-    # Draw the comparison graphs
+def graphing(N, M, Fi, gpredict, save_path):
+    matplotlib.use('agg')
     plt.figure()
     plt.plot(Fi, linewidth=1, linestyle='-', color='b', label='Fi') # Draw Fi
     plt.plot(gpredict, linewidth=1, linestyle='-', color='r', label='g') # Draw forecasting line
@@ -114,20 +116,30 @@ def graphing(N, M, Fi, gpredict):
     plt.xlabel('Time step') #  Time step
     plt.ylabel('Satellite signal') # Satellite signal
     plt.legend() # Output legend
-    plt.xlim([0, N]) # Limit x
+    plt.xlim([0, N + M + 10]) # Limit x
     plt.xticks(range(0, N + M, 20)) # Limit y
-    plt.savefig('Figure1.png')
-    plt.show() # Show it!
+    plt.savefig(save_path)  # Save the plot as an image
+    plt.close() # Close the plot
 
-def main():
-    data = loadData("dataset.txt")
-    r = 3
-    M = 30
-    Fi, U, L, K, X, N = Step1(data, 100, 50)
+    return save_path
+
+def generate_inf_graph(fileName, r, M, N, L):
+    data = loadData(fileName)
+    limit = data[0][0]
+    # r = 3
+    # M = 30
+    # N = 100
+    # L = 20
+    Fi, U, L, K, X, N, d = Step1(data, N, L)
     Pi, g = Step2(U, L, K, X, N, r)
     gpredict = Step3(r, Pi, g, L, N, M)
-    graphing(N, M, Fi, gpredict)
+    save_path = 'static/Figure2.png'  # Define the path to save the image
+    final_graph = graphing(N, M, Fi, gpredict, save_path)
+    return final_graph
 
+# def main():
+#     data = loadData('uploads/dataset.txt')
+#     Step1(data, 100, 50)
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

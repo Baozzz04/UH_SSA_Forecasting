@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSA Forecasting</title>
+</head>
+<body>
+    <h1>SSA Forecasting Website</h1>
+    {% if error %}
+    <p>Error: {{ error }}</p>
+    {% endif %}
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".txt"><br><br>
+        <!-- <label for="use_previous">Use Previously Uploaded Dataset:</label>
+        <input type="checkbox" id="use_previous" name="use_previous"><br><br> -->
+        <label for="N">N:</label>
+        <input type="text" id="N" name="N"><br><br>
+        <label for="L">L:</label>
+        <input type="text" id="L" name="L"><br><br>
+        <label for="M">M:</label>
+        <input type="text" id="M" name="M"><br><br>
+        <label for="r">r:</label>
+        <input type="text" id="r" name="r"><br><br>
+        <input type="submit" value="Upload">
+    </form>
+    {% if graph_path %}
+    <h2>Generated Graph</h2>
+    <img src="{{ url_for('serve_plot', path=graph_path) }}" alt="Generated Graph">
+    {% endif %}
+</body>
+</html>
