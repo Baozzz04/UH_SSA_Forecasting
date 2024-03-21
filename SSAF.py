@@ -108,7 +108,7 @@ def graphing(N, M, Fi, gpredict):
     # Draw the comparison graphs
     plt.figure()
     plt.plot(Fi, linewidth=1, linestyle='-', color='b', label='Fi') # Draw Fi
-    plt.plot(gpredict, linewidth=1, linestyle='-', color='r', label='g') # Draw forecasting line g
+    plt.plot(gpredict, linewidth=1, linestyle='-', color='r', label='g') # Draw forecasting line
     plt.axvline(x=N, linewidth=0.5, linestyle='-', color='k', label='N line') #  y = N
 
     plt.xlabel('Time step') #  Time step
@@ -116,12 +116,13 @@ def graphing(N, M, Fi, gpredict):
     plt.legend() # Output legend
     plt.xlim([0, N]) # Limit x
     plt.xticks(range(0, N + M, 20)) # Limit y
+    plt.savefig('Figure1.png')
     plt.show() # Show it!
 
 def main():
     data = loadData("dataset.txt")
     r = 3
-    M = 100
+    M = 30
     Fi, U, L, K, X, N = Step1(data, 100, 50)
     Pi, g = Step2(U, L, K, X, N, r)
     gpredict = Step3(r, Pi, g, L, N, M)
