@@ -12,8 +12,9 @@
     {% endif %}
     <form action="/upload" method="post" enctype="multipart/form-data">
         <input type="file" name="file" accept=".txt"><br><br>
-        <!-- <label for="use_previous">Use Previously Uploaded Dataset:</label>
-        <input type="checkbox" id="use_previous" name="use_previous"><br><br> -->
+        <label for="use_previous">Use Satellite Dataset:</label>
+        <input type="checkbox" id="use_previous" name="use_previous"><br><br>
+        <!-- <input type="file" name="file" id="file" accept=".txt" {% if use_previous %}disabled{% endif %}><br><br> -->
         <label for="N">N:</label>
         <input type="text" id="N" name="N"><br><br>
         <label for="L">L:</label>
@@ -30,3 +31,18 @@
     {% endif %}
 </body>
 </html>
+
+<script>
+    // Function to toggle the disabled attribute of the file input
+    function toggleFileInput() {
+        var fileInput = document.getElementById("file");
+        var usePreviousCheckbox = document.getElementById("use_previous");
+        fileInput.disabled = usePreviousCheckbox.checked;
+    }
+
+    // Attach an event listener to the checkbox to toggle the file input on change
+    document.getElementById("use_previous").addEventListener("change", toggleFileInput);
+
+    // Call toggleFileInput function initially to set the initial state
+    toggleFileInput();
+</script>
